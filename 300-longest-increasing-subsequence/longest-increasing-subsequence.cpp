@@ -36,13 +36,34 @@ public:
         return dp[0][0];
     }
 
+    int solveSpaceOpt(vector<int>& nums){
+        int n = nums.size();
+        vector<int> curr(n+1, 0);
+        vector<int> next(n+1, 0);
+
+        for(int index = n-1; index>=0; index--){
+            for(int prev = index-1; prev >= -1; prev--){
+                int exclude = next[prev+1];
+                int include = 0;
+                if(prev == -1 || nums[index] > nums[prev]){
+                    include = 1 + next[index+1];
+                }
+                curr[prev+1] = max(include, exclude);
+            }
+            next = curr;
+        }
+        return next[0];
+    }
+
     int lengthOfLIS(vector<int>& nums) {
         // int n = nums.size();
         // vector<vector<int>> dp(n, vector<int>(n+1, -1));
         // int ans = solve(nums, 0, -1, dp);
         // return ans;
 
-        int ans = solveTab(nums);
-        return ans;
+        // int ans = solveTab(nums);
+        // return ans;
+
+        return solveSpaceOpt(nums);
     }
 };
