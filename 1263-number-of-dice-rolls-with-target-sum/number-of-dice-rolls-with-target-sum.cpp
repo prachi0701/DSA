@@ -46,11 +46,33 @@ public:
         return dp[n][target];
     }
 
+    int solveSpaceOpt(int n, int k, int target){
+        vector<int> prev(target+1, 0);
+        vector<int> curr(target+1, 0);
+        prev[0] = 1;
+
+        for(int dice=1; dice<=n; dice++){
+            for(int t=1; t<=target; t++){
+                int ans = 0;
+                for(int i=1; i<=k; i++){
+                    if(t-i >= 0){
+                        ans = (ans + prev[t-i])%MOD;
+                    }
+                }
+                curr[t] = ans;
+            }
+            prev = curr;
+        }
+        return curr[target];
+    }
+
     int numRollsToTarget(int n, int k, int target) {
         // vector<vector<int>> dp(n+1, vector<int>(target+1, -1));
         // int ans = solve(n, k, target, dp);
         // return ans;
 
-        return solveTab(n, k, target);
+        // return solveTab(n, k, target);
+
+        return solveSpaceOpt(n, k, target);
     }
 };
