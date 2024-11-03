@@ -26,7 +26,35 @@ public:
         return dp[0][1][k];
     }
 
+
+    int solveMem(int index, int transaction, int k, vector<int>& prices, vector<vector<int>>& dp){
+        if(index == prices.size() || transaction == 2*k){
+            return 0;
+        }
+        if(dp[index][transaction] != -1){
+            return dp[index][transaction];
+        }
+
+        int profit = 0;
+        if(transaction % 2 == 0){
+            int include = (-1)*prices[index] + solveMem(index+1, transaction+1, k, prices, dp);
+            int exclude = 0 + solveMem(index+1, transaction, k, prices, dp);
+            profit = max(include, exclude);
+        }
+        else{
+            int include = prices[index] + solveMem(index+1, transaction+1, k, prices, dp);
+            int exclude = 0 + solveMem(index+1, transaction, k, prices, dp);
+            profit = max(include, exclude);
+        }
+        return dp[index][transaction] = profit;
+    }
+
+
     int maxProfit(int k, vector<int>& prices) {
-        return solveTab(k, prices);
+        // return solveTab(k, prices);
+
+        int n = prices.size();
+        vector<vector<int>> dp(n, vector<int>(2*k+1, -1));
+        return solveMem(0, 0, k, prices, dp);
     }
 };
