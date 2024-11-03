@@ -50,11 +50,37 @@ public:
     }
 
 
+    int solveTab2(int k, vector<int>& prices){
+        int n = prices.size();
+        vector<vector<int>> dp(n+1, vector<int>(2*k+1, 0));
+
+        for(int index = n-1; index>=0; index--){
+            for(int transaction = 2*k-1; transaction>=0; transaction--){
+                int profit = 0;
+                if(transaction % 2 == 0){
+                    int include = (-1)*prices[index] + dp[index+1][transaction+1];
+                    int exclude = 0 + dp[index+1][transaction];
+                    profit = max(include, exclude);
+                }
+                else{
+                    int include = prices[index] + solveMem(index+1, transaction+1, k, prices, dp);
+                    int exclude = 0 + dp[index+1][transaction];
+                    profit = max(include, exclude);
+                }
+                dp[index][transaction] = profit;
+            }
+        }
+        return dp[0][0];
+    }
+
+
     int maxProfit(int k, vector<int>& prices) {
         // return solveTab(k, prices);
 
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2*k+1, -1));
-        return solveMem(0, 0, k, prices, dp);
+        // int n = prices.size();
+        // vector<vector<int>> dp(n, vector<int>(2*k, -1));
+        // return solveMem(0, 0, k, prices, dp);
+
+        return solveTab2(k, prices);
     }
 };
