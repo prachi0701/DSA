@@ -63,7 +63,7 @@ public:
                     profit = max(include, exclude);
                 }
                 else{
-                    int include = prices[index] + solveMem(index+1, transaction+1, k, prices, dp);
+                    int include = prices[index] + dp[index+1][transaction+1];
                     int exclude = 0 + dp[index+1][transaction];
                     profit = max(include, exclude);
                 }
@@ -74,6 +74,32 @@ public:
     }
 
 
+    int solveSO(int k, vector<int>& prices){
+        int n = prices.size();
+        vector<int> next(2*k+1, 0);
+        vector<int> curr(2*k+1, 0);
+
+        for(int index = n-1; index>=0; index--){
+            for(int transaction = 2*k-1; transaction>=0; transaction--){
+                int profit = 0;
+                if(transaction % 2 == 0){
+                    int include = (-1)*prices[index] + next[transaction+1];
+                    int exclude = 0 + next[transaction];
+                    profit = max(include, exclude);
+                }
+                else{
+                    int include = prices[index] + next[transaction+1];
+                    int exclude = 0 + next[transaction];
+                    profit = max(include, exclude);
+                }
+                curr[transaction] = profit;
+            }
+            next = curr;
+        }
+        return next[0];
+    }
+
+
     int maxProfit(int k, vector<int>& prices) {
         // return solveTab(k, prices);
 
@@ -81,6 +107,8 @@ public:
         // vector<vector<int>> dp(n, vector<int>(2*k, -1));
         // return solveMem(0, 0, k, prices, dp);
 
-        return solveTab2(k, prices);
+        // return solveTab2(k, prices);
+
+        return solveSO(k, prices);
     }
 };
