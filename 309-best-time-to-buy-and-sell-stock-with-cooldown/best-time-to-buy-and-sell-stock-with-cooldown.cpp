@@ -44,11 +44,37 @@ public:
     }
 
 
+    int solveTab(vector<int>& prices){
+        int n = prices.size();
+        vector<vector<int>> dp(n+2, vector<int>(2, 0));
+
+        for(int index = n-1; index>=0; index--){
+            for(int buy=0; buy<=1; buy++){
+                int profit = 0;
+                if(buy == 1){
+                    int include = (-1)*prices[index] + dp[index+1][0];
+                    int exclude = 0 + dp[index+1][1];
+                    profit = max(include, exclude);
+                }
+                else{
+                    int include = prices[index] + dp[index+2][1];
+                    int exclude = 0 + dp[index+1][0];
+                    profit = max(include, exclude);
+                }
+                dp[index][buy] = profit;
+            }
+        }
+        return dp[0][1];
+    }
+
+
     int maxProfit(vector<int>& prices) {
         // return solve(0, 1, prices);
 
-        int n = prices.size();
-        vector<vector<int>> dp(n, vector<int>(2, -1));
-        return solveMem(0, 1, prices, dp);
+        // int n = prices.size();
+        // vector<vector<int>> dp(n, vector<int>(2, -1));
+        // return solveMem(0, 1, prices, dp);
+
+        return solveTab(prices);
     }
 };
