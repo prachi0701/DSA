@@ -64,6 +64,7 @@ public:
         return dp[0][1];
     }
 
+
     int solveSO(vector<int>& prices){
         int n = prices.size();
         vector<int> next(2, 0);
@@ -89,6 +90,26 @@ public:
     }
 
 
+    int solveSOVariable(vector<int>& prices){
+        int n = prices.size();
+        int nextBuy = 0, nextNotBuy = 0, currBuy = 0, currNotBuy = 0;
+
+        for(int index = n-1; index>=0; index--){
+            int buying = (-1)*prices[index] + nextNotBuy;
+            int notBuying = 0 + nextBuy;
+            currBuy = max(buying, notBuying);
+
+            int selling = prices[index] + nextBuy;
+            int notSelling = 0 + nextNotBuy;
+            currNotBuy = max(selling, notSelling);
+
+            nextBuy = currBuy;
+            nextNotBuy = currNotBuy;
+        }
+        return nextBuy;
+    }
+
+
     int maxProfit(vector<int>& prices) {
         // return solve(0, 1, prices);
 
@@ -98,6 +119,8 @@ public:
 
         // return solveTab(prices);
 
-        return solveSO(prices);
+        // return solveSO(prices);
+
+        return solveSOVariable(prices);
     }
 };
