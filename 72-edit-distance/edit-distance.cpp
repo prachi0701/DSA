@@ -60,8 +60,8 @@ public:
         int n = a.length();
         int m = b.length();
         vector<vector<int>> dp(n+1, vector<int>(m+1, 0));
-        for(int i=0; i<b.length(); i++){
-            dp[n][i] = b.length() - i;
+        for(int j=0; j<b.length(); j++){
+            dp[n][j] = b.length() - j;
         }
         for(int i=0; i<a.length(); i++){
             dp[i][m] = a.length() - i;
