@@ -17,7 +17,7 @@ public:
     }
 
     int repeatedStringMatch(string a, string b) {\
-        int n = (b.length() + a.length() - 1) / a.length();
+        // int n = (b.length() + a.length() - 1) / a.length();
 
         // 4 possible way
         // x n*a x ----- x n*a ------- n*a x ----- n*a
@@ -25,23 +25,23 @@ public:
         string temp = a;
         int cnt = 1;
 
-        while(cnt != n){
+        while(a.length() < b.length()){
             a += temp;
             cnt++; 
         }
 
         if(isSubstring(a, b) == true){
-            return n;
+            return cnt;
         }
 
         a += temp;
         if(isSubstring(a, b) == true){
-            return n+1;
+            return cnt+1;
         }
 
         a += temp;
         if(isSubstring(a, b) == true){
-            return n+2;
+            return cnt+2;
         }
 
         return -1;
