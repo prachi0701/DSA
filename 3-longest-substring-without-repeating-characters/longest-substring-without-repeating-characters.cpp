@@ -4,24 +4,19 @@ public:
         if(s.length() == 0){
             return 0;
         }
-
-
         int maxi = 1;
+        unordered_set<int> set;
+        int l = 0;
 
-        for(int i=0; i<s.length(); i++){
-            int cnt = 1;
-            unordered_set<int> set;
-            set.insert(s[i]);
-            for(int j=i+1; j<s.length(); j++){
-                if(set.find(s[j]) != set.end()){
-                    break;
-                }
-                else{
-                    set.insert(s[j]);
-                    cnt++;
-                    maxi = max(maxi, cnt);
+        for(int r=0; r<s.length(); r++){
+            if(set.find(s[r]) != set.end()){
+                while(l < r && set.find(s[r]) != set.end()){
+                    set.erase(s[l]);
+                    l++;
                 }
             }
+            set.insert(s[r]);
+            maxi = max(maxi, r - l + 1);
         }
         return maxi;
     }
