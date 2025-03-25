@@ -8,54 +8,37 @@
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-
-
 class Solution {
 public:
-
-    int getLength(ListNode* head){
-        int len = 0;
-        ListNode* temp = head;
-        while(temp != NULL){
-            len++;
-            temp = temp->next;
-        }
-        return len;
-    }
-
     bool isPalindrome(ListNode* head) {
-        if(head == NULL || head->next == NULL){
-            return true;
-        }
-
-        int len = getLength(head);
-        int mid = len/2;
         ListNode* slow = head;
+        ListNode* fast = head;
 
-        while(mid-1 != 0){
+        while(fast->next != NULL && fast->next->next != NULL){
             slow = slow->next;
-            mid--;
+            fast = fast->next->next;
         }
 
         ListNode* prev = NULL;
         ListNode* curr = slow;
         ListNode* frw;
+
         while(curr != NULL){
             frw = curr->next;
             curr->next = prev;
             prev = curr;
             curr = frw;
         }
-        // slow->next = curr;
 
-        ListNode* start = head;
-        ListNode* end = prev;
-        while(end != NULL && start != NULL){
-            if(start->val != end->val){
+        ListNode* first = head;
+        ListNode* second = prev;
+
+        while(first != NULL && second != NULL){
+            if(first->val != second->val){
                 return false;
             }
-            start = start->next;
-            end = end->next;
+            first = first->next;
+            second = second->next;
         }
         return true;
     }
